@@ -1,3 +1,7 @@
+# November 2020
+# by bmitay4
+# Economic Algorithms Course, Ariel University
+
 import cvxpy
 import numpy
 
@@ -52,7 +56,8 @@ def get_max_value():
     for row in range(len(matrix) - 1):
         for column in range(len(matrix[0])):
             if matrix[row][column] != 0 and matrix[row + 1][column] != 0:
-                topValues.append(column)
+                if not topValues.__contains__(column):
+                    topValues.append(column)
     return topValues
 
 
@@ -106,7 +111,6 @@ def to_string(index_max_value, variable_list):
         for value in index_max_value:
             for row in range(len(matrix)):
                 print("Agent #{} gets".format(row + 1), end=" ")
-                flag:bool = False
                 for column in range(len(matrix[0])):
                     if column == value:
                         print("{} of resource #{},".format(variable_list[row].value, column + 1), end=" ")
@@ -119,12 +123,15 @@ def to_string(index_max_value, variable_list):
 if __name__ == '__main__':
     # Define matrices for holding the resources
     matrix_1 = numpy.array([[81, 19, 0], [80, 0, 20]])
-    matrix_1_1 = numpy.array([[81, 19, 0], [80, 0, 20], [80, 0, 0]])
-    matrix_1_1_1 = numpy.array([[81, 19, 0, 0], [80, 0, 20, 0], [30, 0, 0, 0]])
-    matrix_2 = numpy.array([[19, 0, 81], [0, 20, 80]])
-    matrix_3 = numpy.array([[0, 81, 19], [20, 80, 0]])
-    matrix_4 = numpy.array([[81, 50, 0], [81, 10, 30]])
+    matrix_1_1 = numpy.array([[19, 0, 81], [0, 20, 80]])
+    matrix_1_1_1 = numpy.array([[0, 81, 19], [20, 80, 0]])
+    matrix_2 = numpy.array([[81, 19, 0], [80, 0, 20], [80, 0, 0]])
+    matrix_3 = numpy.array([[81, 19, 0, 0], [80, 0, 20, 0], [30, 0, 0, 0]])
 
+    # No envy, each user get its share
+    no_envy_matrix = numpy.array([[0, 0, 81], [81, 0, 0]])
+
+    # Error, we require that for each user, the importance of each resource is non-negative
     error_matrix = numpy.array([[-1, 0, 81], [0, 20, 80]])
 
-    calculate_pareto_efficiency(matrix_1_1)
+    calculate_pareto_efficiency(matrix_3)
