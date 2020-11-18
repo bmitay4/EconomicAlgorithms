@@ -1,6 +1,7 @@
 # November 2020
 # by bmitay4
 
+import random
 import numpy as np
 import networkx as nx
 
@@ -11,6 +12,7 @@ def calculate_rental_harmony(matrix: np.ndarray):
     # Variable which holds the matrix's dimensions
     questions = len(matrix[0])
     students = len(matrix)
+    partial_value = int(questions / students)
 
     # Define an empty complete bipartite graph
     G = nx.complete_bipartite_graph(0, 0)
@@ -61,9 +63,24 @@ def calculate_rental_harmony(matrix: np.ndarray):
     print("The divide questions for each student:\n", ans, "\n")
     for row in range(students):
         student_sum = 0
-        for value in range(4 * row, 4 * row + 4):
+        for value in range(partial_value * row, partial_value * row + partial_value):
             student_sum += matrix[row][int(str(ans[value])[12:]) - 1]
         print("For student {}, Total effort for questions is: {}".format(row + 1, student_sum))
+
+
+def random_values(students: int, questions: int, min_value: int, max_value: int):
+    if questions % students != 0:
+        raise Exception("Error, recheck your input\n"
+                        "There is no equal division between the amount of questions and the students")
+
+    single_row = []
+    ans = []
+    for row in range(students):
+        for column in range(questions):
+            single_row.append(random.randint(min_value, max_value))
+        ans.append(single_row)
+        single_row = []
+    return ans
 
 
 if __name__ == '__main__':
@@ -76,6 +93,13 @@ if __name__ == '__main__':
                   [5, 5, 2, 3, 4, 1, 2, 3, 1, 4, 3, 2],
                   [1, 2, 1, 1, 2, 5, 4, 1, 3, 3, 5, 5]]
 
+    # Added on class
+    students_segal = [[2, 3, 4, 5, 5, 4, 3, 2, 2],
+                      [5, 5, 2, 3, 4, 1, 2, 3, 4]]
+
+    # Random array, by: (Students, Questions, Min random value, Max random value)
+    random_students = random_values(2, 4, 0, 10)
+
     students_3 = [[4, 1, 5, 4, 5, 1, 2, 3, 4, 5, 1, 1],
                   [1, 3, 4, 5, 1, 4, 3, 4, 5, 4, 5, 5],
                   [3, 4, 1, 1, 2, 5, 4, 5, 1, 2, 3, 4]]
@@ -84,4 +108,4 @@ if __name__ == '__main__':
                   [1, 1, 1, 1, 2, 2, 2, 2, 5, 4, 5, 5],
                   [1, 2, 5, 4, 2, 0, 1, 0, 5, 5, 5, 5]]
 
-    calculate_rental_harmony(np.array(students_1))
+    calculate_rental_harmony(np.array(random_students))
