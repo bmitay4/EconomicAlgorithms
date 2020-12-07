@@ -3,7 +3,6 @@
 # Sources
 # https://stackoverflow.com/questions/59620349/how-to-pass-a-greater-than-or-less-than-sign-through-a-parameter
 from typing import List
-from operator import ge
 
 
 # Return two maximum values
@@ -53,7 +52,7 @@ def search_threshold_value_over_seven(values: List[float]) -> float:
 
     for index, value in enumerate(values):
         if value <= 7 and 0 < (7 - value) < threshold_value:
-            threshold_value = (7 - value)
+            threshold_value = value
 
     return threshold_value
 
@@ -77,7 +76,7 @@ def monotony_verification(values: List[float], values_choice: List[bool]) -> boo
 def payments(values: List[float]) -> List[float]:
     threshold_value = search_threshold_value_over_seven(values)
     choices_players = choices_over_seven(values)
-
+    print("Array Sorted: ", values)
     # We will make sure the function is monotonous, otherwise we will end the program
     try:
         monotony_verification(values, choices_players)
@@ -85,14 +84,11 @@ def payments(values: List[float]) -> List[float]:
         print(e)
         exit(1)
 
-    print(values)
-    print(threshold_value)
-
     payment_values: [float] = []
 
     for index, value in enumerate(values):
         if value != 0:
-            payment_values.append(value * threshold_value)
+            payment_values.append(threshold_value)
         else:
             payment_values.append(0)
 
@@ -103,18 +99,10 @@ if __name__ == '__main__':
     players_1 = [5, 6, 3, 7, 8]
     players_2 = [10, 6, 6, 8, 9]
 
-    print(payments(players_1))
-    # payments(players_2)
+    print("Value Over 7 Choice, Given Array: ", players_1)
+    print("Final Payments: ", payments(players_1))
+    print("-------------------------")
 
-    # print("Max Value Choice Given Array: ", players_1)
-    # print(choices_max_value(players_1))
-    # print("-------------------------")
-    # print("Second Max Value Choice Given Array: ", players_1)
-    # print(choices_max_two(players_1))
-    # print("-------------------------")
-    #
-    # print("Max Value Choice Given Array: ", players_2)
-    # print(choices_max_value(players_2))
-    # print("-------------------------")
-    # print("Second Max Value Choice Given Array: ", players_2)
-    # print(choices_max_two(players_2))
+    print("Value Over 7 Choice, Given Array: ", players_2)
+    print(payments(players_2))
+    print("-------------------------")
